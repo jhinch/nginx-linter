@@ -54,7 +54,7 @@ location @other {
     ])
 ];
 
-describe('rules = if-is-evil', () => {
+describe('rules/if-is-evil', () => {
     describe('#invoke()', () => {
         TEST_CONFIGS.forEach(({name, mode, contents, expectedErrors}) => {
             it(`should have ${expectedErrors.length ? 'errors' : 'no errors'} with ${name}`, () => {
