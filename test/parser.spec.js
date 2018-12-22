@@ -42,7 +42,7 @@ function sanitizeParseTree(node) {
 }
 
 const TEST_CONFIGS = {
-    'simple.conf' : [
+    'simple.conf': [
         directive('events', null, []),
         directive('http', null, [
             directive('server', null, [
@@ -53,13 +53,61 @@ const TEST_CONFIGS = {
             ])
         ])
     ],
-    'single-quotes.conf' : [
+    'single-quotes.conf': [
         directive('events', null, []),
         directive('http', null, [
             directive('server', null, [
                 directive('listen', ['80']),
                 directive('location', ['=', '\'/o\\\'k\''], [
                     directive('return', ['200'])
+                ])
+            ])
+        ])
+    ],
+    'if-is-evil.conf': [
+        directive('events', null, []),
+        directive('http', null, [
+            directive('server', null, [
+                directive('listen', ['80']),
+                directive('location', ['=', '/ok'], [
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('return', ['405'])
+                    ]),
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['=', '/ok-but-bad'], [
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('return', ['405'])
+                    ]),
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['=', '/rewrite-from'], [
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('rewrite', ['^', '/rewrite-to', 'last'])
+                    ]),
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['=', '/rewrite-to'], [
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['=', '/rewrite-bad-but-ok'], [
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('rewrite', ['^', '/rewrite-to', 'break'])
+                    ]),
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['=', '/rewrite-bad'], [
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('rewrite', ['^', '/rewrite-to', 'break'])
+                    ]),
+                    directive('return', ['200'])
+                ]),
+                directive('location', ['/crash'], [
+                    directive('set', ['$true', '1']),
+                    directive('if', ['($true)'], [
+                        directive('proxy_pass', ['http://127.0.0.1:8080/'])
+                    ]),
+                    directive('if', ['($true)'], [])
                 ])
             ])
         ])
@@ -77,4 +125,3 @@ describe('parser', () => {
         }
     });
 });
-

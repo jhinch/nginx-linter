@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm-run-all test:*",
     "test:lint": "eslint lib test",
-    "test:unit": "mocha"
+    "test:unit": "mocha test/*.spec.js test/**/*.spec.js"
   },
   "keywords": [
     "nginx",
