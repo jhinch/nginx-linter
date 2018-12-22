@@ -39,7 +39,7 @@ const TABLE_CONFIG = {
         5: { // rule
             alignment: 'left',
             paddingLeft: 0,
-            paddingRight: 1
+            paddingRight: 0
         }
     }
 };
@@ -125,14 +125,13 @@ function validate(options) {
     console.log('Options:', options);
     let files = findFiles(options.includes, options.excludes);
     let errorCount = files.map(file => {
-        console.log('File:', file);
         let fileContents = fs.readFileSync(file, 'utf8');
         let parseTree = parser.parse(fileContents);
         let results = runRules(parseTree);
         if (results.length) {
             outputResults(file, results);
         }
-        return results.length;
+        return results.filter(result => result.type === 'error').length;
     }).reduce((a, b) => a + b, 0);
     outputSummary({ fileCount: files.length, errorCount });
     return errorCount ? 1 : 0;
@@ -147,17 +146,22 @@ function outputResults(fileName, results) {
     console.log('');
     console.log(chalk.underline(fileName));
     let tableData = [];
-    results.forEach(({pos, errors}) => {
-        errors.forEach(ruleResult => {
-            tableData.push([chalk.dim(pos.start.line), chalk.dim(':'), chalk.dim(pos.start.column), chalk.red('error'), ruleResult.text, chalk.dim(ruleResult.rule)]);
-        });
+    results.forEach(({pos, type, text, rule}) => {
+        tableData.push([
+            chalk.dim(pos.start.line),
+            chalk.dim(':'),
+            chalk.dim(pos.start.column),
+            chalk.red(type),
+            text,
+            chalk.dim(rule)
+        ]);
     });
     console.log(table(tableData, TABLE_CONFIG));
 }
 
 function outputSummary({fileCount, errorCount}) {
     console.log('');
-    console.log(`Validation ${errorCount ? chalk.red('failed!') : chalk.green('succeeded!')} Files: ${fileCount} Errors: ${errorCount}`);
+    console.log(`${errorCount ? chalk.red('Validation failed!') : chalk.green('Validation succeeded!')} Files: ${fileCount}, Errors: ${errorCount}`);
 }
 
 function main(args) {

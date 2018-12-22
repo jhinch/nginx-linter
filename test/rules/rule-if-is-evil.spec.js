@@ -25,27 +25,27 @@ location @other {
     `, []),
     testConfig('if-is-evil.conf file', 'mostly', fs.readFileSync(__dirname + '/../examples/if-is-evil.conf', 'utf8'), [
         {
-            info: [],
-            warnings: [],
-            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' directives using the \'last\' flag, found \'break\''}],
+            rule: 'if-is-evil',
+            type: 'error',
+            text: 'A \'rewrite\' within an \'if\' must use the \'last\' flag, found \'break\'',
             pos: {
                 start: { column: 39, line: 39, offset: 863 },
                 end: { column: 44, line: 39, offset: 868 }
             }
         },
         {
-            info: [],
-            warnings: [],
-            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' directives using the \'last\' flag, found \'break\''}],
+            rule: 'if-is-evil',
+            type: 'error',
+            text: 'A \'rewrite\' within an \'if\' must use the \'last\' flag, found \'break\'',
             pos: {
                 start: { column: 39, line: 46, offset: 1033 },
                 end: { column: 44, line: 46, offset: 1038 }
             }
         },
         {
-            info: [],
-            warnings: [],
-            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' or \'return\' directive, found \'proxy_pass\''}],
+            rule: 'if-is-evil',
+            type: 'error',
+            text: 'Only a \'rewrite\' or \'return\' is allowed within an \'if\', found \'proxy_pass\'',
             pos: {
                 start: { column: 17, line: 56, offset: 1218 },
                 end: { column: 51, line: 56, offset: 1252 }
