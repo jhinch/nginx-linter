@@ -17,8 +17,6 @@ location / {
     if ($something) {
         return 418;
     }
-
-    # some configuration
 }
 
 location @other {
