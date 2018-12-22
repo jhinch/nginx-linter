@@ -25,21 +25,27 @@ location @other {
     `, []),
     testConfig('if-is-evil.conf file', 'mostly', fs.readFileSync(__dirname + '/../examples/if-is-evil.conf', 'utf8'), [
         {
-            errors: ['if is evil and must only contain rewrite directives using last flag, found break'],
+            info: [],
+            warnings: [],
+            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' directives using the \'last\' flag, found \'break\''}],
             pos: {
                 start: { column: 39, line: 39, offset: 863 },
                 end: { column: 44, line: 39, offset: 868 }
             }
         },
         {
-            errors: ['if is evil and must only contain rewrite directives using last flag, found break'],
+            info: [],
+            warnings: [],
+            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' directives using the \'last\' flag, found \'break\''}],
             pos: {
                 start: { column: 39, line: 46, offset: 1033 },
                 end: { column: 44, line: 46, offset: 1038 }
             }
         },
         {
-            errors: ['if is evil and must only contain rewrite or return directive, found proxy_pass'],
+            info: [],
+            warnings: [],
+            errors: [{rule: 'if-is-evil', text: 'if is evil and must only contain \'rewrite\' or \'return\' directive, found \'proxy_pass\''}],
             pos: {
                 start: { column: 17, line: 56, offset: 1218 },
                 end: { column: 51, line: 56, offset: 1252 }

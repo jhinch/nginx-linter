@@ -2,10 +2,13 @@
   "name": "nginx-linter",
   "version": "0.1.0",
   "description": "A linter and formatter for Nginx configuration files",
+  "bin": {
+    "nginxlinter": "bin/nginxlinter.js"
+  },
   "main": "lib/index.js",
   "scripts": {
     "test": "npm-run-all test:*",
-    "test:lint": "eslint lib test",
+    "test:lint": "eslint bin lib test",
     "test:unit": "mocha test/*.spec.js test/**/*.spec.js"
   },
   "keywords": [
@@ -15,7 +18,9 @@
   "author": "Jason Hinch",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "pegjs": "^0.10.0"
+    "chalk": "^2.4.1",
+    "pegjs": "^0.10.0",
+    "table": "^5.1.1"
   },
   "devDependencies": {
     "eslint": "^5.10.0",
