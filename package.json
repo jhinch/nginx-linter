@@ -4,8 +4,9 @@
   "description": "A linter and formatter for Nginx configuration files",
   "main": "lib/index.js",
   "scripts": {
-    "test": "npm run test:eslint",
-    "test:eslint": "eslint lib"
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "eslint lib test",
+    "test:unit": "mocha"
   },
   "keywords": [
     "nginx",
@@ -17,6 +18,7 @@
     "pegjs": "^0.10.0"
   },
   "devDependencies": {
-    "eslint": "^5.10.0"
+    "eslint": "^5.10.0",
+    "mocha": "^5.2.0"
   }
 }
