@@ -2,9 +2,10 @@
   "name": "nginx-linter",
   "version": "0.1.0",
   "description": "A linter and formatter for Nginx configuration files",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test:eslint",
+    "test:eslint": "eslint lib"
   },
   "keywords": [
     "nginx",
@@ -14,5 +15,8 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "pegjs": "^0.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.10.0"
   }
 }
