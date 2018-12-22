@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A linter and formatter for Nginx configuration files",
   "bin": {
-    "nginxlinter": "bin/nginxlinter.js"
+    "nginx-linter": "bin/nginx-linter.js"
   },
   "main": "lib/index.js",
   "scripts": {
