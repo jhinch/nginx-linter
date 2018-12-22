@@ -1,3 +1,5 @@
+[![build status][travis-image]][travis-url]
+
 # nginx-linter
 
 A command line tool for validating nginx files for style and common pitfalls.
