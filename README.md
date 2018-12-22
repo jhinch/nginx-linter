@@ -1,4 +1,4 @@
-[![build status][travis-image]][travis-url]
+[![Build Status](https://travis-ci.org/jhinch/nginx-linter.svg?branch=master)](https://travis-ci.org/jhinch/nginx-linter)
 
 # nginx-linter
 
