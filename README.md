@@ -1,5 +1,6 @@
 [![NPM version][npm-image]][npm-url]
 [![build status][travis-image]][travis-url]
+[![Code coverage][coveralls-image]][coveralls-url]
 
 # nginx-linter
 
@@ -33,3 +34,5 @@ For all the options, you can use the `--help`:
 [npm-url]: https://www.npmjs.com/package/nginx-linter
 [travis-image]: https://img.shields.io/travis/jhinch/nginx-linter/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/jhinch/nginx-linter
+[coveralls-image]: https://img.shields.io/coveralls/jhinch/nginx-linter/master.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/jhinch/nginx-linter?branch=master
