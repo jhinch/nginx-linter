@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
 let fs = require('fs');
-//let path = require('path');
 let parser = require('../lib/parser');
 let runRules = require('../lib/rules').run;
 let {table, getBorderCharacters} = require('table');
 let chalk = require('chalk');
+let glob = require('glob');
 
 const TABLE_CONFIG = {
     border: getBorderCharacters('void'),
@@ -114,15 +114,14 @@ function help(options) {
     console.log('Usage: nginx-linter [arguments]');
     console.log('');
     console.log('Arguments:');
-    console.log('--help                          Print this help message and exit');
-    console.log(`--config <file>                 Specify the configuration file to use. Default (${DEFAULTS.config})`);
-    console.log(`--include <file|directory|glob> Include the file, directory or glob in nginx files to validate. Can be specified multiple times. Default (${DEFAULTS.includes.join(', ')})`);
-    console.log('--exclude <file|directory|glob> Exclue a file, directory or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
+    console.log('--help                 Print this help message and exit');
+    console.log(`--config <file>        Specify the configuration file to use. Default (${DEFAULTS.config})`);
+    console.log(`--include <file|glob>  Include the file or glob in nginx files to validate. Can be specified multiple times. Default (${DEFAULTS.includes.join(', ')})`);
+    console.log('--exclude <file|glob>  Exclue a file or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
     return error ? 1 : 0;
 }
 
 function validate(options) {
-    console.log('Options:', options);
     let files = findFiles(options.includes, options.excludes);
     let errorCount = files.map(file => {
         let fileContents = fs.readFileSync(file, 'utf8');
@@ -138,8 +137,15 @@ function validate(options) {
 }
 
 function findFiles(includes, excludes) {
-    // TODO: Support directories and globs
-    return includes.filter(f => excludes.indexOf(f) === -1);
+    let includedFiles = findMatchingFiles(includes);
+    let excludedFiles = findMatchingFiles(excludes);
+    return includedFiles.filter(f => excludedFiles.indexOf(f) === -1);
+}
+
+function findMatchingFiles(globs) {
+    let files = [];
+    globs.forEach(globString => glob.sync(globString).forEach(file => files.push(file)));
+    return files;
 }
 
 function outputResults(fileName, results) {
