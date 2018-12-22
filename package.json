@@ -1,0 +1,15 @@
+{
+  "name": "nginx-linter",
+  "version": "0.1.0",
+  "description": "A linter and formatter for Nginx configuration files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nginx",
+    "linter"
+  ],
+  "author": "Jason Hinch",
+  "license": "GPL-3.0-or-later"
+}
