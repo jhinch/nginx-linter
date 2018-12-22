@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/jhinch/nginx-linter.svg?branch=master)](https://travis-ci.org/jhinch/nginx-linter)
+[![NPM version][npm-image]][npm-url]
+[![build status][travis-image]][travis-url]
 
 # nginx-linter
 
@@ -26,3 +27,9 @@ This will by default validate the configuration files under `/etc/nginx/`.
 For all the options, you can use the `--help`:
 
     nginx-linter --help
+
+
+[npm-image]: https://img.shields.io/npm/v/nginx-linter.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/nginx-linter
+[travis-image]: https://img.shields.io/travis/jhinch/nginx-linter/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/jhinch/nginx-linter
