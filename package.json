@@ -17,6 +17,10 @@
   ],
   "author": "Jason Hinch",
   "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhinch/nginx-linter.git"
+  },
   "dependencies": {
     "chalk": "^2.4.1",
     "pegjs": "^0.10.0",
