@@ -12,16 +12,59 @@ const TEST_CONFIGS = [
 location / {
     error_page 418 = @other;
     recursive_error_pages on;
-
+    
+    # if is normally evil, but I know what I'm doing
     if ($something) {
         return 418;
     }
-}
-
-location @other {
-    # some other configuration
-}
-    `, []),
+}`, []),
+    testConfig('2 spaces', 2, 'location / {\n  # OK\n  return 200;\n}', []),
+    testConfig('4 spaces instead of 2', 2, 'location / {\n    return 200;\n}', [
+        {
+            rule: 'indentation',
+            text: 'Expected 2 spaces, found 4 spaces',
+            type: 'error',
+            pos: {
+                start: { column: 5, line: 2, offset: 17 },
+                end: { column: 16, line: 2, offset: 28 }
+            }
+        }
+    ]),
+    testConfig('4 spaces', 4, 'location / {\n    # OK\n    return 200;\n}', []),
+    testConfig('2 spaces instead of 4', 4, 'location / {\n  return 200;\n}', [
+        {
+            rule: 'indentation',
+            text: 'Expected 4 spaces, found 2 spaces',
+            type: 'error',
+            pos: {
+                start: { column: 3, line: 2, offset: 15 },
+                end: { column: 14, line: 2, offset: 26 }
+            }
+        }
+    ]),
+    testConfig('tabs', 'tab', 'location / {\n\t# OK\n\treturn 200;\n}', []),
+    testConfig('2 spaces instead of tabs', 'tab', 'location / {\n  return 200;\n}', [
+        {
+            rule: 'indentation',
+            text: 'Expected 1 tab, found 2 spaces',
+            type: 'error',
+            pos: {
+                start: { column: 3, line: 2, offset: 15 },
+                end: { column: 14, line: 2, offset: 26 }
+            }
+        }
+    ]),
+    testConfig('2 spaces instead of tabs', 'tab', 'location / {\n \treturn 200;\n}', [
+        {
+            rule: 'indentation',
+            text: 'Expected 1 tab, found mixed',
+            type: 'error',
+            pos: {
+                start: { column: 3, line: 2, offset: 15 },
+                end: { column: 14, line: 2, offset: 26 }
+            }
+        }
+    ])
 ];
 
 describe('rules/indentation', () => {
