@@ -14,6 +14,18 @@ location / {
     return 204;
 }
     `, []),
+    testConfig('prefix location with off', `
+#nginxlinter off
+location /books/([^/]+) {
+    return 204;
+}
+    `, []),
+    testConfig('prefix location with true', `
+#nginxlinter strict-location:true
+location / {
+    return 204;
+}
+    `, []),
     testConfig('strict-location.conf', fs.readFileSync(__dirname + '/../examples/strict-location.conf', 'utf8'), [
         {
             rule: 'strict-location',

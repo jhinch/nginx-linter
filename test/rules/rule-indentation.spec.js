@@ -30,6 +30,7 @@ location / {
             },
         },
     ]),
+    testConfig('4 spaces instead of 2 but with override', 2, 'location / {#nginxlinter indentation:4\n    return 200;\n}', []),
     testConfig('4 spaces', 4, 'location / {\n    # OK\n    return 200;\n}', []),
     testConfig('2 spaces instead of 4', 4, 'location / {\n  return 200;\n}', [
         {
