@@ -21,8 +21,8 @@ location / {
             text: 'Expected string when using \'location\', got regular expression',
             pos: {
                 start: { column: 44, line: 7, offset: 144 },
-                end: { column: 45, line: 7, offset: 145 }
-            }
+                end: { column: 45, line: 7, offset: 145 },
+            },
         },
         {
             rule: 'strict-location',
@@ -30,10 +30,10 @@ location / {
             text: 'Expected string when using \'=\' modifier in \'location\', got regular expression',
             pos: {
                 start: { column: 20, line: 11, offset: 249 },
-                end: { column: 36, line: 11, offset: 265 }
-            }
-        }
-    ])
+                end: { column: 36, line: 11, offset: 265 },
+            },
+        },
+    ]),
 ];
 
 describe('rules/if-is-evil', () => {

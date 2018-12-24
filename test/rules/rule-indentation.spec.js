@@ -26,9 +26,9 @@ location / {
             type: 'error',
             pos: {
                 start: { column: 5, line: 2, offset: 17 },
-                end: { column: 16, line: 2, offset: 28 }
-            }
-        }
+                end: { column: 16, line: 2, offset: 28 },
+            },
+        },
     ]),
     testConfig('4 spaces', 4, 'location / {\n    # OK\n    return 200;\n}', []),
     testConfig('2 spaces instead of 4', 4, 'location / {\n  return 200;\n}', [
@@ -38,9 +38,9 @@ location / {
             type: 'error',
             pos: {
                 start: { column: 3, line: 2, offset: 15 },
-                end: { column: 14, line: 2, offset: 26 }
-            }
-        }
+                end: { column: 14, line: 2, offset: 26 },
+            },
+        },
     ]),
     testConfig('tabs', 'tab', 'location / {\n\t# OK\n\treturn 200;\n}', []),
     testConfig('2 spaces instead of tabs', 'tab', 'location / {\n  return 200;\n}', [
@@ -50,9 +50,9 @@ location / {
             type: 'error',
             pos: {
                 start: { column: 3, line: 2, offset: 15 },
-                end: { column: 14, line: 2, offset: 26 }
-            }
-        }
+                end: { column: 14, line: 2, offset: 26 },
+            },
+        },
     ]),
     testConfig('2 spaces instead of tabs', 'tab', 'location / {\n \treturn 200;\n}', [
         {
@@ -61,10 +61,10 @@ location / {
             type: 'error',
             pos: {
                 start: { column: 3, line: 2, offset: 15 },
-                end: { column: 14, line: 2, offset: 26 }
-            }
-        }
-    ])
+                end: { column: 14, line: 2, offset: 26 },
+            },
+        },
+    ]),
 ];
 
 describe('rules/indentation', () => {

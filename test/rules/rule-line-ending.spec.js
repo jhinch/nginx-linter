@@ -17,7 +17,7 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 23, line: 1, offset: 22 },
-                end: { column: 1, line: 2, offset: 24 }
+                end: { column: 1, line: 2, offset: 24 },
             },
         },
         {
@@ -26,9 +26,9 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 2, line: 3, offset: 41 },
-                end: { column: 1, line: 4, offset: 43 }
-            }
-        }
+                end: { column: 1, line: 4, offset: 43 },
+            },
+        },
     ]),
     testConfig('simple crlf', 'crlf', 'location /no-content {\r\n    return 204;\r\n}\r\n', []),
     testConfig('simple crlf with error', 'crlf', 'location /no-content {\r\n    return 204;\n}\r\n', [
@@ -38,9 +38,9 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 16, line: 2, offset: 39 },
-                end: { column: 1, line: 3, offset: 40 }
-            }
-        }
+                end: { column: 1, line: 3, offset: 40 },
+            },
+        },
     ]),
     testConfig('newlines.conf', 'lf', fs.readFileSync(__dirname + '/../examples/newlines.conf', 'utf8'), [
         {
@@ -49,8 +49,8 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 2, line: 2, offset: 10 },
-                end: { column: 1, line: 3, offset: 12 }
-            }
+                end: { column: 1, line: 3, offset: 12 },
+            },
         },
         {
             rule: 'line-ending',
@@ -58,8 +58,8 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 13, line: 4, offset: 31 },
-                end: { column: 1, line: 5, offset: 33 }
-            }
+                end: { column: 1, line: 5, offset: 33 },
+            },
         },
         {
             rule: 'line-ending',
@@ -67,10 +67,10 @@ const TEST_CONFIGS = [
             type: 'error',
             pos: {
                 start: { column: 24, line: 7, offset: 100 },
-                end: { column: 1, line: 8, offset: 102 }
-            }
-        }
-    ])
+                end: { column: 1, line: 8, offset: 102 },
+            },
+        },
+    ]),
 ];
 
 describe('rules/line-ending', () => {

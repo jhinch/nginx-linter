@@ -13,34 +13,34 @@ const TABLE_CONFIG = {
         0: { // Line number
             alignment: 'right',
             paddingLeft: 2,
-            paddingRight: 0
+            paddingRight: 0,
         },
         1: { // :
             alignment: 'center',
             paddingLeft: 0,
-            paddingRight: 0
+            paddingRight: 0,
         },
         2: { // Column number
             alignment: 'left',
             paddingLeft: 0,
-            paddingRight: 1
+            paddingRight: 1,
         },
         3: { // messageType
             alignment: 'left',
             paddingLeft: 0,
-            paddingRight: 1
+            paddingRight: 1,
         },
         4: { // message
             alignment: 'left',
             paddingLeft: 0,
-            paddingRight: 1
+            paddingRight: 1,
         },
         5: { // rule
             alignment: 'left',
             paddingLeft: 0,
-            paddingRight: 0
-        }
-    }
+            paddingRight: 0,
+        },
+    },
 };
 
 function execute(options) {
@@ -105,7 +105,7 @@ function outputResults(fileName, results) {
             chalk.dim(pos.start.column),
             chalk.red(type),
             text,
-            chalk.dim(rule)
+            chalk.dim(rule),
         ]);
     });
     console.log(table(tableData, TABLE_CONFIG));
@@ -130,5 +130,5 @@ function main(args) {
 }
 
 module.exports = {
-    main
+    main,
 };

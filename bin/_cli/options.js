@@ -2,7 +2,7 @@ const defaults = {
     command: 'validate',
     config: './.nginx-linter.json',
     includes: ['/etc/nginx/*.conf', '/etc/nginx/**/*.conf'],
-    excludes: []
+    excludes: [],
 };
 
 function parse(args) {
@@ -53,5 +53,5 @@ function parse(args) {
 
 module.exports = {
     defaults,
-    parse
+    parse,
 };

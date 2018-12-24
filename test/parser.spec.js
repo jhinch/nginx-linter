@@ -2,12 +2,12 @@ let assert = require('assert');
 let parser = require('../lib/parser');
 let fs = require('fs');
 
-function punctuation(value) {
-    return { type: 'punctuation', text: value };
+function punctuation(text) {
+    return { type: 'punctuation', text };
 }
 
-function parameter(value) {
-    return { type: 'parameter', text: value };
+function parameter(text) {
+    return { type: 'parameter', text };
 }
 
 function directive(name, parameters, body) {
@@ -21,9 +21,9 @@ function directive(name, parameters, body) {
     parameters = parameters.map(parameter);
     return {
         type: 'directive',
-        name: name,
-        parameters: parameters,
-        body: body
+        name,
+        parameters,
+        body,
     };
 }
 
@@ -48,10 +48,10 @@ const TEST_CONFIGS = {
             directive('server', null, [
                 directive('listen', ['80']),
                 directive('location', ['=', '/ok'], [
-                    directive('return', ['200'])
-                ])
-            ])
-        ])
+                    directive('return', ['200']),
+                ]),
+            ]),
+        ]),
     ],
     'single-quotes.conf': [
         directive('events', null, []),
@@ -59,10 +59,10 @@ const TEST_CONFIGS = {
             directive('server', null, [
                 directive('listen', ['80']),
                 directive('location', ['=', '\'/o\\\'k\''], [
-                    directive('return', ['200'])
-                ])
-            ])
-        ])
+                    directive('return', ['200']),
+                ]),
+            ]),
+        ]),
     ],
     'if-is-evil.conf': [
         directive('events', null, []),
@@ -71,47 +71,47 @@ const TEST_CONFIGS = {
                 directive('listen', ['80']),
                 directive('location', ['=', '/ok'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
-                        directive('return', ['405'])
+                        directive('return', ['405']),
                     ]),
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['=', '/ok-but-bad'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
-                        directive('return', ['405'])
+                        directive('return', ['405']),
                     ]),
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['=', '/rewrite-from'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
-                        directive('rewrite', ['^', '/rewrite-to', 'last'])
+                        directive('rewrite', ['^', '/rewrite-to', 'last']),
                     ]),
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['=', '/rewrite-to'], [
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['=', '/rewrite-bad-but-ok'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
-                        directive('rewrite', ['^', '/rewrite-to', 'break'])
+                        directive('rewrite', ['^', '/rewrite-to', 'break']),
                     ]),
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['=', '/rewrite-bad'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
-                        directive('rewrite', ['^', '/rewrite-to', 'break'])
+                        directive('rewrite', ['^', '/rewrite-to', 'break']),
                     ]),
-                    directive('return', ['200'])
+                    directive('return', ['200']),
                 ]),
                 directive('location', ['/crash'], [
                     directive('set', ['$true', '1']),
                     directive('if', ['($true)'], [
-                        directive('proxy_pass', ['http://127.0.0.1:8080/'])
+                        directive('proxy_pass', ['http://127.0.0.1:8080/']),
                     ]),
-                    directive('if', ['($true)'], [])
-                ])
-            ])
-        ])
-    ]
+                    directive('if', ['($true)'], []),
+                ]),
+            ]),
+        ]),
+    ],
 };
 
 describe('parser', () => {

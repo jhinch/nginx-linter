@@ -29,9 +29,9 @@ location / {
             type: 'error',
             pos: {
                 start: { column: 5, line: 3, offset: 18 },
-                end: { column: 6, line: 5, offset: 61 }
+                end: { column: 6, line: 5, offset: 61 },
             },
-        }
+        },
     ]),
     testConfig('simple if with return with always with comment', 'always', `
 location / {
@@ -48,8 +48,8 @@ location / {
             text: 'if is evil and not allowed',
             pos: {
                 start: { column: 13, line: 19, offset: 353 },
-                end: { column: 14, line: 21, offset: 424 }
-            }
+                end: { column: 14, line: 21, offset: 424 },
+            },
         },
         {
             rule: 'if-is-evil',
@@ -57,8 +57,8 @@ location / {
             text: 'A \'rewrite\' within an \'if\' must use the \'last\' flag, found \'break\'',
             pos: {
                 start: { column: 39, line: 46, offset: 1033 },
-                end: { column: 44, line: 46, offset: 1038 }
-            }
+                end: { column: 44, line: 46, offset: 1038 },
+            },
         },
         {
             rule: 'if-is-evil',
@@ -66,10 +66,10 @@ location / {
             text: 'Only a \'rewrite\' or \'return\' is allowed within an \'if\', found \'proxy_pass\'',
             pos: {
                 start: { column: 17, line: 56, offset: 1218 },
-                end: { column: 51, line: 56, offset: 1252 }
-            }
-        }
-    ])
+                end: { column: 51, line: 56, offset: 1252 },
+            },
+        },
+    ]),
 ];
 
 describe('rules/if-is-evil', () => {
