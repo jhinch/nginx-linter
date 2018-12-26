@@ -9,6 +9,7 @@
   "scripts": {
     "test": "npm-run-all test:*",
     "test:lint": "eslint bin lib test",
+    "eslint:fix": "eslint --fix bin lib test",
     "test:unit": "nyc --reporter=html --reporter=text mocha test/*.spec.js test/**/*.spec.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },

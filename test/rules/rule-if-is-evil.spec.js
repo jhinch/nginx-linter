@@ -41,6 +41,24 @@ location / {
     }
     return 200;
 }`, []),
+    testConfig('if with valid directives but more than one', 'mostly', `
+location / {
+    if ($something) {
+        rewrite ^ /other last;
+        return 418;
+    }
+    return 200;
+}`, [
+        {
+            rule: 'if-is-evil',
+            text: '\'if\' must only contain a single directive',
+            type: 'error',
+            pos: {
+                start: { column: 9, line: 5, offset: 75 },
+                end: { column: 20, line: 5, offset: 86 },
+            },
+        },
+    ]),
     testConfig('if-is-evil.conf file', 'mostly', fs.readFileSync(__dirname + '/../examples/if-is-evil.conf', 'utf8'), [
         {
             rule: 'if-is-evil',
