@@ -27,8 +27,3 @@ overrides:
     - test/**/*.js
     env:
       mocha: true
-  - files:
-    - bin/*.js
-    - bin/**/*.js
-    rules:
-      no-console: off

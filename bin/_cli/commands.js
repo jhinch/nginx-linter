@@ -43,42 +43,42 @@ const TABLE_CONFIG = {
     },
 };
 
-function execute(options) {
+function execute(options, output) {
     switch (options.command) {
         case 'validate':
-            return validate(options);
+            return validate(options, output);
         default:
             throw `Unknown command: ${options.command}`;
     }
 }
 
-function help(options) {
+function help(options, output) {
     let error = typeof options === 'string' ? options : null;
     if (error) {
-        console.log(error);
+        output.log(error);
     }
-    console.log('Usage: nginx-linter [arguments]');
-    console.log('');
-    console.log('Arguments:');
-    console.log('--help                 Print this help message and exit');
-    console.log(`--config <file>        Specify the configuration file to use. Default (${optionsParser.defaults.config})`);
-    console.log(`--include <file|glob>  Include the file or glob in nginx files to validate. Can be specified multiple times. Default (${optionsParser.defaults.includes.join(', ')})`);
-    console.log('--exclude <file|glob>  Exclue a file or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
+    output.log('Usage: nginx-linter [arguments]');
+    output.log('');
+    output.log('Arguments:');
+    output.log('--help                 Print this help message and exit');
+    output.log(`--config <file>        Specify the configuration file to use. Default (${optionsParser.defaults.config})`);
+    output.log(`--include <file|glob>  Include the file or glob in nginx files to validate. Can be specified multiple times. Default (${optionsParser.defaults.includes.join(', ')})`);
+    output.log('--exclude <file|glob>  Exclue a file or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
     return error ? 1 : 0;
 }
 
-function validate(options) {
+function validate(options, output) {
     let files = findFiles(options.includes, options.excludes);
     let errorCount = files.map(file => {
         let fileContents = fs.readFileSync(file, 'utf8');
         let parseTree = parser.parse(fileContents);
         let results = runRules(parseTree);
         if (results.length) {
-            outputResults(file, results);
+            outputResults(file, results, output);
         }
         return results.filter(result => result.type === 'error').length;
     }).reduce((a, b) => a + b, 0);
-    outputSummary({ fileCount: files.length, errorCount });
+    outputSummary({ fileCount: files.length, errorCount }, output);
     return errorCount ? 1 : 0;
 }
 
@@ -94,9 +94,9 @@ function findMatchingFiles(globs) {
     return files;
 }
 
-function outputResults(fileName, results) {
-    console.log('');
-    console.log(chalk.underline(fileName));
+function outputResults(fileName, results, output) {
+    output.log('');
+    output.log(chalk.underline(fileName));
     let tableData = [];
     results.forEach(({pos, type, text, rule}) => {
         tableData.push([
@@ -108,23 +108,23 @@ function outputResults(fileName, results) {
             chalk.dim(rule),
         ]);
     });
-    console.log(table(tableData, TABLE_CONFIG));
+    output.log(table(tableData, TABLE_CONFIG));
 }
 
-function outputSummary({fileCount, errorCount}) {
-    console.log('');
-    console.log(`${errorCount ? chalk.red('Validation failed!') : chalk.green('Validation succeeded!')} Files: ${fileCount}, Errors: ${errorCount}`);
+function outputSummary({fileCount, errorCount}, output) {
+    output.log('');
+    output.log(`${errorCount ? chalk.red('Validation failed!') : chalk.green('Validation succeeded!')} Files: ${fileCount}, Errors: ${errorCount}`);
 }
 
-function main(args) {
+function main(args, output) {
     try {
         let options = optionsParser.parse(args);
         if (typeof options === 'string' || options.command === 'help') {
-            return help(options);
+            return help(options, output);
         }
-        return execute(options);
+        return execute(options, output);
     } catch(e) {
-        console.error('Unexpected error:', e);
+        output.error('Unexpected error:', e);
         return 1;
     }
 }

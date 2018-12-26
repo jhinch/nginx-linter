@@ -2,11 +2,12 @@ const defaults = {
     command: 'validate',
     config: './.nginx-linter.json',
     includes: ['/etc/nginx/*.conf', '/etc/nginx/**/*.conf'],
+    followIncludes: true,
     excludes: [],
 };
 
 function parse(args) {
-    let options = Object.assign({}, defaults);
+    let options = JSON.parse(JSON.stringify(defaults));
     let argsRemaining = args.slice(0);
     let customizedIncludes = false;
     let customizedExcludes = false;
