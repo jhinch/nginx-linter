@@ -21,6 +21,8 @@ rules:
   comma-dangle:
     - error
     - always-multiline
+  keyword-spacing:
+    - error
 overrides:
   - files:
     - test/*.js

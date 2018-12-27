@@ -123,7 +123,7 @@ function main(args, output) {
             return help(options, output);
         }
         return execute(options, output);
-    } catch(e) {
+    } catch (e) {
         output.error('Unexpected error:', e);
         return 1;
     }
