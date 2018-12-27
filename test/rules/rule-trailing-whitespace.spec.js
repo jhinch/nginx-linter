@@ -1,5 +1,6 @@
 let assert = require('assert');
 let fs = require('fs');
+let path = require('path');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/rules/runner');
 let trailingWhitespaceRule = require('../../lib/rules/rule-trailing-whitespace');
@@ -30,8 +31,8 @@ const TEST_CONFIGS = [
             },
         },
     ]),
-    testConfig('simple.conf', fs.readFileSync(__dirname + '/../examples/simple.conf', 'utf8'), []),
-    testConfig('lua.conf', fs.readFileSync(__dirname + '/../examples/lua.conf', 'utf8'), []),
+    testConfig('simple.conf', fs.readFileSync(path.resolve(__dirname, '..', 'examples', 'simple.conf'), 'utf8'), []),
+    testConfig('lua.conf', fs.readFileSync(path.resolve(__dirname, '..', 'examples', 'lua.conf'), 'utf8'), []),
 ];
 
 describe('rules/trailing-whitespace', () => {

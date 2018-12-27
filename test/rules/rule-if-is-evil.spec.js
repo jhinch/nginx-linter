@@ -1,8 +1,9 @@
 let assert = require('assert');
+let fs = require('fs');
+let path = require('path');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/rules/runner');
 let ifIsEvilRule = require('../../lib/rules/rule-if-is-evil');
-let fs = require('fs');
 
 function testConfig(name, mode, contents, expectedErrors) {
     return { name, mode, contents, expectedErrors };
@@ -59,7 +60,7 @@ location / {
             },
         },
     ]),
-    testConfig('if-is-evil.conf file', 'mostly', fs.readFileSync(__dirname + '/../examples/if-is-evil.conf', 'utf8'), [
+    testConfig('if-is-evil.conf file', 'mostly', fs.readFileSync(path.resolve(__dirname, '..', 'examples', 'if-is-evil.conf'), 'utf8'), [
         {
             rule: 'if-is-evil',
             type: 'error',

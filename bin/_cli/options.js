@@ -1,6 +1,6 @@
 const defaults = {
     command: 'validate',
-    config: './.nginx-linter.json',
+    config: '~/.nginx-linter.json',
     includes: ['/etc/nginx/*.conf', '/etc/nginx/**/*.conf'],
     followIncludes: true,
     excludes: [],

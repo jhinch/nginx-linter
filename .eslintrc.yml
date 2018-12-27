@@ -50,6 +50,8 @@ rules:
   linebreak-style:
     - error
     - unix
+  no-path-concat:
+    - error
   no-trailing-spaces:
     - error
   quotes:

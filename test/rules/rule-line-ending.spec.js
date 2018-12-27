@@ -1,8 +1,9 @@
 let assert = require('assert');
+let fs = require('fs');
+let path = require('path');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/rules/runner');
 let lineEndingRule = require('../../lib/rules/rule-line-ending');
-let fs = require('fs');
 
 function testConfig(name, lineEnding, contents, expectedErrors) {
     return { name, lineEnding, contents, expectedErrors };
@@ -42,7 +43,7 @@ const TEST_CONFIGS = [
             },
         },
     ]),
-    testConfig('newlines.conf', 'lf', fs.readFileSync(__dirname + '/../examples/newlines.conf', 'utf8'), [
+    testConfig('newlines.conf', 'lf', fs.readFileSync(path.resolve(__dirname, '..', 'examples', 'newlines.conf'), 'utf8'), [
         {
             rule: 'line-ending',
             text: 'Expected lf, found crlf',

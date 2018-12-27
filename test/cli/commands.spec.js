@@ -1,4 +1,5 @@
 let assert = require('assert');
+let path = require('path');
 let {main} = require('../../bin/_cli/commands');
 
 let stubConsole = new Proxy({}, {
@@ -31,13 +32,13 @@ describe('cli/commands', () => {
             assert.strictEqual(exitCode, 1);
         });
         it('simple.conf', () => {
-            let exitCode = main(['--include', __dirname + '/../examples/simple.conf'], stubConsole);
+            let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'simple.conf')], stubConsole);
             assert.strictEqual(exitCode, 0);
             let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
             assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
         });
         it('if-is-evil.conf', () => {
-            let exitCode = main(['--include', __dirname + '/../examples/if-is-evil.conf'], stubConsole);
+            let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'if-is-evil.conf')], stubConsole);
             assert.strictEqual(exitCode, 1);
             let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
             assert.ok(/Validation failed!.*Files: 1, Errors: 3$/.test(message), `Expected success summary, got '${message}'`);

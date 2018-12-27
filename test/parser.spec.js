@@ -1,6 +1,7 @@
 let assert = require('assert');
-let parser = require('../lib/parser');
 let fs = require('fs');
+let path = require('path');
+let parser = require('../lib/parser');
 
 function punctuation(text) {
     return { type: 'punctuation', text };
@@ -169,7 +170,7 @@ describe('parser', () => {
         for (let configFileName in TEST_CONFIGS) {
             let expectedParseTree = TEST_CONFIGS[configFileName];
             it(`should handle ${configFileName} file`, () => {
-                let actualParseTree = parser.parse(fs.readFileSync(__dirname + '/examples/' + configFileName, 'utf8'));
+                let actualParseTree = parser.parse(fs.readFileSync(path.resolve(__dirname, 'examples', configFileName), 'utf8'));
                 assert.deepStrictEqual(sanitizeParseTree(actualParseTree), expectedParseTree);
             });
         }

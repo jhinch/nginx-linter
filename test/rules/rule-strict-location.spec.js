@@ -1,8 +1,9 @@
 let assert = require('assert');
+let fs = require('fs');
+let path = require('path');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/rules/runner');
 let strictLocationRule = require('../../lib/rules/rule-strict-location');
-let fs = require('fs');
 
 function testConfig(name, contents, expectedErrors) {
     return { name, contents, expectedErrors };
@@ -26,7 +27,7 @@ location / {
     return 204;
 }
     `, []),
-    testConfig('strict-location.conf', fs.readFileSync(__dirname + '/../examples/strict-location.conf', 'utf8'), [
+    testConfig('strict-location.conf', fs.readFileSync(path.resolve(__dirname, '..', 'examples', 'strict-location.conf'), 'utf8'), [
         {
             rule: 'strict-location',
             type: 'error',
