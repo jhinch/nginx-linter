@@ -27,14 +27,30 @@ function directive(name, parameters, body) {
     };
 }
 
+function luaBlock(body) {
+    return {
+        type: 'lua:block',
+        body,
+    };
+}
+
+function lua(text) {
+    return {
+        type: 'lua:code',
+        text,
+    };
+}
+
 function sanitizeParseTree(node) {
     if (Array.isArray(node)) {
-        return node.filter(subNode => ['whitespace', 'newline', 'comment'].indexOf(subNode.type) === -1).map(sanitizeParseTree);
+        return node.filter(subNode => ['whitespace', 'newline', 'comment', 'lua:comment'].indexOf(subNode.type) === -1).map(sanitizeParseTree);
     } else {
         let sanitizeNode = Object.assign({}, node);
         delete sanitizeNode['pos'];
         if (sanitizeNode.type === 'directive') {
             sanitizeNode.parameters = sanitizeParseTree(sanitizeNode.parameters);
+            sanitizeNode.body = sanitizeParseTree(sanitizeNode.body);
+        } else if (sanitizeNode.type === 'lua:block') {
             sanitizeNode.body = sanitizeParseTree(sanitizeNode.body);
         }
         return sanitizeNode;
@@ -108,6 +124,30 @@ const TEST_CONFIGS = {
                         directive('proxy_pass', ['http://127.0.0.1:8080/']),
                     ]),
                     directive('if', ['($true)'], []),
+                ]),
+            ]),
+        ]),
+    ],
+    'lua.conf': [
+        directive('events', null, []),
+        directive('http', null, [
+            directive('server', null, [
+                directive('listen', ['80']),
+                directive('location', ['=', '/ok'], [
+                    directive('content_by_lua_block', null, [
+                        luaBlock([
+                            lua('local'),
+                            lua('_M'),
+                            lua('='),
+                            punctuation('{'),
+                            punctuation('}'),
+                            lua('function'),
+                            lua('_M.go()'),
+                            lua('ngx.say("Yoyoyoyo")'),
+                            lua('end'),
+                            lua('_M.go()'),
+                        ]),
+                    ]),
                 ]),
             ]),
         ]),

@@ -1,4 +1,5 @@
 let assert = require('assert');
+let fs = require('fs');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/rules/runner');
 let indentationRule = require('../../lib/rules/rule-indentation');
@@ -66,6 +67,8 @@ location / {
             },
         },
     ]),
+    testConfig('simple.conf', 4, fs.readFileSync(__dirname + '/../examples/simple.conf', 'utf8'), []),
+    testConfig('lua.conf', 4, fs.readFileSync(__dirname + '/../examples/lua.conf', 'utf8'), []),
 ];
 
 describe('rules/indentation', () => {
