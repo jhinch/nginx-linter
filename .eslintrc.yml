@@ -5,23 +5,69 @@ extends: 'eslint:recommended'
 parserOptions:
   ecmaVersion: 2015
 rules:
+  array-bracket-newline:
+    - error
+    - consistent
+  array-bracket-spacing:
+    - error
+  array-callback-return:
+    - error
+  array-element-newline:
+    - error
+    - consistent
+  brace-style:
+    - error
+  comma-dangle:
+    - error
+    - always-multiline
+  comma-spacing:
+    - error
+  comma-style:
+    - error
+  complexity:
+    - error
+  consistent-return:
+    - error
+  curly:
+    - error
+    - multi-line
+    - consistent
+  dot-location:
+    - error
+    - property
+  eqeqeq:
+    - error
+    - always
+    - 'null': never
+  func-call-spacing:
+    - error
   indent:
     - error
     - 4
     - SwitchCase: 1
+  keyword-spacing:
+    - error
   linebreak-style:
     - error
     - unix
+  no-trailing-spaces:
+    - error
   quotes:
     - error
     - single
   semi:
     - error
     - always
-  comma-dangle:
+  space-before-blocks:
     - error
-    - always-multiline
-  keyword-spacing:
+  space-before-function-paren:
+    - error
+    - never
+  space-in-parens:
+    - error
+  space-infix-ops:
+    - error
+  yoda:
     - error
 overrides:
   - files:
