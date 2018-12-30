@@ -1,6 +1,7 @@
 let fs = require('fs');
 let parser = require('../../lib/parser');
-let runRules = require('../../lib/rules').run;
+let {runRules} = require('../../lib/validator');
+let builtinRules = require('../../lib/rules').builtins;
 let optionsParser = require('./options');
 let {table, getBorderCharacters} = require('table');
 let chalk = require('chalk');
@@ -63,7 +64,8 @@ function help(options, output) {
     output.log('--help                 Print this help message and exit');
     output.log(`--config <file>        Specify the configuration file to use. Default (${optionsParser.defaults.config})`);
     output.log(`--include <file|glob>  Include the file or glob in nginx files to validate. Can be specified multiple times. Default (${optionsParser.defaults.includes.join(', ')})`);
-    output.log('--exclude <file|glob>  Exclue a file or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
+    output.log('--exclude <file|glob>  Exclude a file or glob in the nginx files to validate. Can be specieid multiple times. Excludes take precedence over includes');
+    output.log('--no-follow-includes   Disable the default behaviour of following include directives found in the nginx configuration');
     return error ? 1 : 0;
 }
 
@@ -72,7 +74,7 @@ function validate(options, output) {
     let errorCount = files.map(file => {
         let fileContents = fs.readFileSync(file, 'utf8');
         let parseTree = parser.parse(fileContents);
-        let results = runRules(parseTree);
+        let results = runValidationWithBuiltins(parseTree);
         if (results.length) {
             outputResults(file, results, output);
         }
@@ -80,6 +82,10 @@ function validate(options, output) {
     }).reduce((a, b) => a + b, 0);
     outputSummary({ fileCount: files.length, errorCount }, output);
     return errorCount ? 1 : 0;
+}
+
+function runValidationWithBuiltins(parseTree) {
+    return runRules(parseTree, builtinRules);
 }
 
 function findFiles(includes, excludes) {

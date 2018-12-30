@@ -2,7 +2,7 @@ let assert = require('assert');
 let fs = require('fs');
 let path = require('path');
 let parser = require('../../lib/parser');
-let {runRules} = require('../../lib/rules/runner');
+let {runRules} = require('../../lib/validator');
 let trailingWhitespaceRule = require('../../lib/rules/rule-trailing-whitespace');
 
 function testConfig(name, contents, expectedErrors) {

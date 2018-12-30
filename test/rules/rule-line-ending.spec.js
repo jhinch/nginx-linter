@@ -2,7 +2,7 @@ let assert = require('assert');
 let fs = require('fs');
 let path = require('path');
 let parser = require('../../lib/parser');
-let {runRules} = require('../../lib/rules/runner');
+let {runRules} = require('../../lib/validator');
 let lineEndingRule = require('../../lib/rules/rule-line-ending');
 
 function testConfig(name, lineEnding, contents, expectedErrors) {

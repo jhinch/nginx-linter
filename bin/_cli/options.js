@@ -42,6 +42,9 @@ function parse(args) {
                     customizedExcludes = true;
                 }
                 break;
+            case '--no-follow-includes':
+                options.followIncludes = false;
+                break;
             case '--help':
                 options.command = 'help';
                 break;
