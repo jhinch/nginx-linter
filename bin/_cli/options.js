@@ -3,6 +3,7 @@ const defaults = {
     config: '~/.nginx-linter.json',
     includes: ['/etc/nginx/*.conf', '/etc/nginx/**/*.conf'],
     followIncludes: true,
+    maxIncludeDepth: 5,
     excludes: [],
 };
 

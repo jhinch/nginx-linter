@@ -8,7 +8,7 @@ let stubConsole = new Proxy({}, {
             return target;
         } else if (Array.isArray(target[prop])) {
             // This cannot be an arrow function as
-            // 'arguments' is not a reference in them
+            // 'arguments' can not be referenced in them
             return function() {
                 target[prop].push(Array.from(arguments));
             };
@@ -42,6 +42,18 @@ describe('cli/commands', () => {
             assert.strictEqual(exitCode, 1);
             let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
             assert.ok(/Validation failed!.*Files: 1, Errors: 3$/.test(message), `Expected success summary, got '${message}'`);
+        });
+        it('nested-includes.conf', () => {
+            let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'nested-includes.conf')], stubConsole);
+            assert.strictEqual(exitCode, 1);
+            let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
+            assert.ok(/Validation failed!.*Files: 1, Errors: 1$/.test(message), `Expected success summary, got '${message}'`);
+        });
+        it('nested-includes.conf with no follow', () => {
+            let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'nested-includes.conf'), '--no-follow-includes'], stubConsole);
+            assert.strictEqual(exitCode, 0);
+            let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
+            assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
         });
     });
 });

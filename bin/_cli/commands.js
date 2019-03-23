@@ -1,11 +1,10 @@
-let fs = require('fs');
 let parser = require('../../lib/parser');
 let {runRules} = require('../../lib/validator');
 let builtinRules = require('../../lib/rules').builtins;
 let optionsParser = require('./options');
 let {table, getBorderCharacters} = require('table');
 let chalk = require('chalk');
-let glob = require('glob');
+let path = require('path');
 
 const TABLE_CONFIG = {
     border: getBorderCharacters('void'),
@@ -70,51 +69,69 @@ function help(options, output) {
 }
 
 function validate(options, output) {
-    let files = findFiles(options.includes, options.excludes);
-    let errorCount = files.map(file => {
-        let fileContents = fs.readFileSync(file, 'utf8');
-        let parseTree = parser.parse(fileContents);
-        let results = runValidationWithBuiltins(parseTree);
+    let fileNodes = parser.parseFiles({
+        includes: options.includes,
+        excludes: options.excludes,
+        maxDepth: options.followIncludes ? options.maxIncludeDepth : 0,
+    });
+    let errorCount = fileNodes.map(fileNode => {
+        let results = runValidationWithBuiltins(fileNode);
         if (results.length) {
-            outputResults(file, results, output);
+            outputResults(fileNode.name, results, output);
         }
-        return results.filter(result => result.type === 'error').length;
+        return countErrors(results);
     }).reduce((a, b) => a + b, 0);
-    outputSummary({ fileCount: files.length, errorCount }, output);
+    outputSummary({ fileCount: fileNodes.length, errorCount }, output);
     return errorCount ? 1 : 0;
+}
+
+function countErrors(results) {
+    return results.reduce((total, result) => {
+        if (result.type === 'error') {
+            return total + 1;
+        } else if (result.nested) {
+            return total + countErrors(result.nested.results);
+        } else {
+            return total;
+        }
+    }, 0);
 }
 
 function runValidationWithBuiltins(parseTree) {
     return runRules(parseTree, builtinRules);
 }
 
-function findFiles(includes, excludes) {
-    let includedFiles = findMatchingFiles(includes);
-    let excludedFiles = findMatchingFiles(excludes);
-    return includedFiles.filter(f => excludedFiles.indexOf(f) === -1);
-}
-
-function findMatchingFiles(globs) {
-    let files = [];
-    globs.forEach(globString => glob.sync(globString).forEach(file => files.push(file)));
-    return files;
-}
-
 function outputResults(fileName, results, output) {
-    output.log('');
+    output.log('', results);
     output.log(chalk.underline(fileName));
+    outputInnerResults(' ', fileName, results, output);
+}
+
+function outputInnerResults(indent, fileName, results, output) {
     let tableData = [];
-    results.forEach(({pos, type, text, rule}) => {
-        tableData.push([
-            chalk.dim(pos.start.line),
-            chalk.dim(':'),
-            chalk.dim(pos.start.column),
-            chalk.red(type),
-            text,
-            chalk.dim(rule),
-        ]);
+    let nestedResults = [];
+    results.forEach(({pos, type, text, nested, rule}) => {
+        if (nested) {
+            nestedResults.push(nested);
+        } else {
+            tableData.push([
+                chalk.dim(pos.start.line),
+                chalk.dim(':'),
+                chalk.dim(pos.start.column),
+                chalk.red(type),
+                text,
+                chalk.dim(rule),
+            ]);
+        }
     });
-    output.log(table(tableData, TABLE_CONFIG));
+    if (tableData.length) {
+        output.log(table(tableData, TABLE_CONFIG));
+    }
+    nestedResults.forEach(nested => {
+        let includeFileName = path.relative(path.dirname(path.resolve(fileName)), nested.fileName);
+        output.log(chalk.bold(indent + 'within'), chalk.underline(includeFileName));
+        outputInnerResults(indent + ' ', nested.fileName, nested.results, output);
+    });
 }
 
 function outputSummary({fileCount, errorCount}, output) {
