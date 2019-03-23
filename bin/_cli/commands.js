@@ -102,7 +102,7 @@ function runValidationWithBuiltins(parseTree) {
 }
 
 function outputResults(fileName, results, output) {
-    output.log('', results);
+    output.log('');
     output.log(chalk.underline(fileName));
     outputInnerResults(' ', fileName, results, output);
 }

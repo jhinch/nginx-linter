@@ -66,8 +66,8 @@ location / {
             type: 'error',
             text: 'if is evil and not allowed',
             pos: {
-                start: { column: 13, line: 19, offset: 353 },
-                end: { column: 14, line: 21, offset: 424 },
+                start: { column: 13, line: 19, offset: 355 },
+                end: { column: 14, line: 21, offset: 426 },
             },
         },
         {
@@ -75,8 +75,8 @@ location / {
             type: 'error',
             text: 'A \'rewrite\' within an \'if\' must use the \'last\' flag, found \'break\'',
             pos: {
-                start: { column: 39, line: 46, offset: 1033 },
-                end: { column: 44, line: 46, offset: 1038 },
+                start: { column: 39, line: 46, offset: 1039 },
+                end: { column: 44, line: 46, offset: 1044 },
             },
         },
         {
@@ -84,8 +84,8 @@ location / {
             type: 'error',
             text: 'Only a \'rewrite\' or \'return\' is allowed within an \'if\', found \'proxy_pass\'',
             pos: {
-                start: { column: 17, line: 56, offset: 1218 },
-                end: { column: 51, line: 56, offset: 1252 },
+                start: { column: 17, line: 56, offset: 1224 },
+                end: { column: 51, line: 56, offset: 1258 },
             },
         },
     ]),

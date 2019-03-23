@@ -92,7 +92,7 @@ const TEST_CONFIGS = {
                     ]),
                     directive('return', ['200']),
                 ]),
-                directive('location', ['=', '/ok-but-bad'], [
+                directive('location', ['=', '/p/ok-but-bad'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
                         directive('return', ['405']),
                     ]),
@@ -107,13 +107,13 @@ const TEST_CONFIGS = {
                 directive('location', ['=', '/rewrite-to'], [
                     directive('return', ['200']),
                 ]),
-                directive('location', ['=', '/rewrite-bad-but-ok'], [
+                directive('location', ['=', '/y/rewrite-bad-but-ok'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
                         directive('rewrite', ['^', '/rewrite-to', 'break']),
                     ]),
                     directive('return', ['200']),
                 ]),
-                directive('location', ['=', '/rewrite-bad'], [
+                directive('location', ['=', '/z/rewrite-bad'], [
                     directive('if', ['($request_method', '=', 'POST)'], [
                         directive('rewrite', ['^', '/rewrite-to', 'break']),
                     ]),
