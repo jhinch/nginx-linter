@@ -55,6 +55,17 @@ describe('cli/commands', () => {
             let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
             assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
         });
+        it('nested-includes.conf with config override', () => {
+            let exitCode = main([
+                '--include',
+                path.resolve(__dirname, '..', 'examples', 'nested-includes.conf'),
+                '--config',
+                path.resolve(__dirname, '..', 'examples', 'nginx-linter.config.json'),
+            ], stubConsole);
+            assert.strictEqual(exitCode, 0);
+            let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
+            assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
+        });
         it('location-order-complicated.conf', () => {
             let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'location-order-complicated.conf')], stubConsole);
             assert.strictEqual(exitCode, 0);

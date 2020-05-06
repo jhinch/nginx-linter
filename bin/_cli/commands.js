@@ -5,6 +5,8 @@ let optionsParser = require('./options');
 let {table, getBorderCharacters} = require('table');
 let chalk = require('chalk');
 let path = require('path');
+let fs = require('fs');
+let os = require('os');
 
 const TABLE_CONFIG = {
     border: getBorderCharacters('void'),
@@ -69,13 +71,14 @@ function help(options, output) {
 }
 
 function validate(options, output) {
+    let config = loadConfig(options.config);
     let fileNodes = parser.parseFiles({
         includes: options.includes,
         excludes: options.excludes,
         maxDepth: options.followIncludes ? options.maxIncludeDepth : 0,
     });
     let errorCount = fileNodes.map(fileNode => {
-        let results = runValidationWithBuiltins(fileNode);
+        let results = runValidationWithBuiltins(fileNode, config);
         if (results.length) {
             outputResults(fileNode.name, results, output);
         }
@@ -97,8 +100,25 @@ function countErrors(results) {
     }, 0);
 }
 
-function runValidationWithBuiltins(parseTree) {
-    return runRules(parseTree, builtinRules);
+function runValidationWithBuiltins(parseTree, config) {
+    return runRules(parseTree, builtinRules, config);
+}
+
+function loadConfig(configFile) {
+    let fileName = configFile;
+    if (fileName[0] === '~') {
+        fileName = path.join(os.homedir(), fileName.slice(1));
+    }
+    let contents = null;
+    try {
+        contents = fs.readFileSync(fileName, 'utf8');
+    } catch (e) {
+        if (configFile === optionsParser.defaults.config) {
+            return {};
+        }
+        throw e;
+    }
+    return JSON.parse(contents);
 }
 
 function outputResults(fileName, results, output) {
@@ -118,7 +138,7 @@ function outputInnerResults(indent, fileName, results, output) {
                 chalk.dim(pos.start.line),
                 chalk.dim(':'),
                 chalk.dim(pos.start.column),
-                chalk.red(type),
+                type === 'error' ? chalk.red(type) : chalk.yellow(type),
                 text,
                 chalk.dim(rule),
             ]);
