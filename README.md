@@ -1,5 +1,5 @@
 [![NPM version][npm-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][github-actions-image]][github-actions-url]
 [![Code coverage][coveralls-image]][coveralls-url]
 
 # nginx-linter
@@ -82,7 +82,7 @@ Enforce that no line ends with whitespace. This rule is largely for cleanliness 
 
 [npm-image]: https://img.shields.io/npm/v/nginx-linter.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/nginx-linter
-[travis-image]: https://img.shields.io/travis/jhinch/nginx-linter/master.svg?style=flat-square
-[travis-url]: https://travis-ci.org/jhinch/nginx-linter
+[github-actions-image]: https://github.com/jhinch/nginx-linter/actions/workflows/main.yml/badge.svg
+[github-actions-url]: https://github.com/jhinch/nginx-linter/actions/workflows/main.yml
 [coveralls-image]: https://img.shields.io/coveralls/jhinch/nginx-linter/master.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/jhinch/nginx-linter?branch=master
