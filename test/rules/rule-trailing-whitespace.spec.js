@@ -26,6 +26,15 @@ const TEST_CONFIGS = [
             text: 'Trailing whitespace found',
             type: 'error',
             pos: {
+                start: { column: 9, line: 3, offset: 24 },
+                end: { column: 1, line: 4, offset: 25 },
+            },
+        },
+        {
+            rule: 'trailing-whitespace',
+            text: 'Trailing whitespace found',
+            type: 'error',
+            pos: {
                 start: { column: 15, line: 4, offset: 39 },
                 end: { column: 1, line: 5, offset: 40 },
             },
