@@ -10,7 +10,7 @@ A command line tool for validating nginx files for style and common pitfalls.
 
 ### Requirements
 
-* Node 11+
+* Node 12+
 
 ### Instructions
 
