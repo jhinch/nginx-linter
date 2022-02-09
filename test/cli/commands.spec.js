@@ -72,5 +72,11 @@ describe('cli/commands', () => {
             let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
             assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
         });
+        it('location-order-with-includes.conf', () => {
+            let exitCode = main(['--include', path.resolve(__dirname, '..', 'examples', 'location-order-with-includes.conf')], stubConsole);
+            assert.strictEqual(exitCode, 0);
+            let message = stubConsole.invocations.log[stubConsole.invocations.log.length - 1];
+            assert.ok(/Validation succeeded!.*Files: 1, Errors: 0$/.test(message), `Expected success summary, got '${message}'`);
+        });
     });
 });
