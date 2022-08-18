@@ -1,6 +1,6 @@
 {
   "name": "nginx-linter",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A linter and formatter for Nginx configuration files",
   "bin": {
     "nginx-linter": "bin/nginx-linter.js"
