@@ -163,6 +163,31 @@ const TEST_CONFIGS = {
             ]),
         ]),
     ],
+    'if.conf': [
+        directive('http', null, [
+            directive('server', null, [
+                directive('listen', ['80']),
+                directive('location', ['=', '/ok'], [
+                    directive('if', ['($http_user_agent', '~', 'MSIE)'], [
+                        directive('rewrite', ['^(.*)$', '/msie/$1', 'break']),
+                    ]),
+                    directive('if', ['($http_cookie', '~*', '"id=([^;]+)(?:;|$)"', ')'], [
+                        directive('set', ['$id', '$1']),
+                    ]),
+                    directive('if', ['($request_method', '=', 'POST)'], [
+                        directive('return', ['405']),
+                    ]),
+                    directive('if', ['($slow)'], [
+                        directive('limit_rate', ['10k']),
+                    ]),
+                    directive('if', ['($invalid_referer)'], [
+                        directive('return', ['403']),
+                    ]),
+                    directive('return', ['200']),
+                ]),
+            ]),
+        ]),
+    ],
 };
 
 describe('parser', () => {
