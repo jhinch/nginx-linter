@@ -188,6 +188,21 @@ const TEST_CONFIGS = {
             ]),
         ]),
     ],
+    'strings.conf': [
+        directive('http', [], [
+            directive('map', ['$request_uri', '$mapped_response_code'], [
+                directive('example.*', ['400']),
+                directive('"{a}"', ['429']),
+                directive('default', ['200']),
+            ]),
+            directive('server', null, [
+                directive('listen', ['80']),
+                directive('location', ['=', '/'], [
+                    directive('return', ['$mapped_response_code']),
+                ]),
+            ]),
+        ]),
+    ],
 };
 
 describe('parser', () => {
