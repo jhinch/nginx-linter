@@ -130,19 +130,41 @@ function outputResults(fileName, results, output) {
 function outputInnerResults(indent, fileName, results, output) {
     let tableData = [];
     let nestedResults = [];
+    let hiddenResults = {};
     results.forEach(({pos, type, text, nested, rule}) => {
         if (nested) {
             nestedResults.push(nested);
         } else {
-            tableData.push([
-                chalk.dim(pos.start.line),
-                chalk.dim(':'),
-                chalk.dim(pos.start.column),
-                type === 'error' ? chalk.red(type) : chalk.yellow(type),
-                text,
-                chalk.dim(rule),
-            ]);
+            hiddenResults[rule] = hiddenResults[rule] || {};
+            hiddenResults[rule][type] = hiddenResults[rule][type] || {total: 0, hidden: 0};
+            hiddenResults[rule][type].total += 1;
+            if (hiddenResults[rule][type].total < 1000) {
+                tableData.push([
+                    chalk.dim(pos.start.line),
+                    chalk.dim(':'),
+                    chalk.dim(pos.start.column),
+                    type === 'error' ? chalk.red(type) : chalk.yellow(type),
+                    text,
+                    chalk.dim(rule),
+                ]);
+            } else {
+                hiddenResults[rule][type].hidden += 1;
+            }
         }
+    });
+    Object.entries(hiddenResults).forEach(([rule, ruleHiddenResults]) => {
+        Object.entries(ruleHiddenResults).forEach(([type, ruleTypeHiddenResults]) => {
+            if (ruleTypeHiddenResults.hidden > 0) {
+                tableData.push([
+                    '',
+                    '',
+                    '',
+                    type === 'error' ? chalk.red(type) : chalk.yellow(type),
+                    ruleTypeHiddenResults.hidden + ' more hidden',
+                    chalk.dim(rule),
+                ]);
+            }
+        });
     });
     if (tableData.length) {
         output.log(table(tableData, TABLE_CONFIG));
